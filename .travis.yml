@@ -11,11 +11,8 @@ install:
   - tar xjvf default.tar.bz2
   - mv pypy-rsdl* rsdl
   - rm default.tar.bz2
-  - curl -L -O https://github.com/HPI-SWA-Lab/RSqueak/archive/master.zip
-  - unzip master.zip
-  - mv RSqueak-master/* .
-  - rm -rf RSqueak-master
-  - rm master.zip
+  - git clone --depth=1 https://github.com/HPI-SWA-Lab/RSqueak.git
+  - mv RSqueak/* .
   - curl -L -O http://www.libsdl.org/release/SDL-1.2.15.dmg
   - hdiutil mount SDL-1.2.15.dmg
   - ls /Volumes/*SDL*/
@@ -24,5 +21,8 @@ env: PY32="arch -32 /System/Library/Frameworks/Python.framework/Versions/2.7/bin
 script:
   - $PY32 pypy/rpython/bin/rpython --batch -Ojit targetrsqueak.py
 after_success:
-  - cp rsqueak rsqueak-x86-darwin-jit-$TRAVIS_COMMIT
+  - cd RSqueak
+  - export RSQUEAKCOMMIT="$(git log --pretty=%h HEAD^..HEAD)"
+  - cd ..
+  - cp rsqueak rsqueak-x86-darwin-jit-$RSQUEAKCOMMIT
   - curl -T rsqueak-x86* http://www.lively-kernel.org/babelsberg/RSqueak/
