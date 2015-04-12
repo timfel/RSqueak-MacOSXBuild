@@ -13,9 +13,7 @@ install:
   - mv RSqueak-master/* .
   - rm -rf RSqueak-master
   - rm master.zip
-env:
-  - PY32="arch -32 /System/Library/Frameworks/Python.framework/Versions/2.7/bin/python"
-  - PYTHONPATH="$PYTHONPATH:pypy/:rsdl/:."
+env: PY32="arch -32 /System/Library/Frameworks/Python.framework/Versions/2.7/bin/python" PYTHONPATH="$PYTHONPATH:pypy/:rsdl/:."
 script:
   - $PY32 pypy/rpython/bin/rpython --batch -Ojit targetrsqueak.py
 after_success:
