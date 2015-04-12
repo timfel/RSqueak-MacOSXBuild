@@ -22,8 +22,5 @@ env: PY32="arch -32 /System/Library/Frameworks/Python.framework/Versions/2.7/bin
 script:
   - $PY32 pypy/rpython/bin/rpython --batch -Ojit targetrsqueak.py
 after_success:
-  - cd RSqueakGit
-  - export RSQUEAKCOMMIT="$(git log --pretty=%h HEAD^..HEAD)"
-  - cd ..
-  - cp rsqueak rsqueak-x86-darwin-jit-$RSQUEAKCOMMIT
+  - cd RSqueakGit; export RSQUEAKCOMMIT="$(git log --pretty=%h HEAD^..HEAD)"; cd ..; cp rsqueak rsqueak-x86-darwin-jit-$RSQUEAKCOMMIT
   - curl -T rsqueak-x86* http://www.lively-kernel.org/babelsberg/RSqueak/
