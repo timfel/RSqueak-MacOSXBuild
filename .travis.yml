@@ -13,6 +13,7 @@ install:
   - rm default.tar.bz2
   - git clone --depth=1 https://github.com/HPI-SWA-Lab/RSqueak.git
   - mv RSqueak/* .
+  - mv RSqueak RSqueakGit
   - curl -L -O http://www.libsdl.org/release/SDL-1.2.15.dmg
   - hdiutil mount SDL-1.2.15.dmg
   - ls /Volumes/*SDL*/
@@ -21,7 +22,7 @@ env: PY32="arch -32 /System/Library/Frameworks/Python.framework/Versions/2.7/bin
 script:
   - $PY32 pypy/rpython/bin/rpython --batch -Ojit targetrsqueak.py
 after_success:
-  - cd RSqueak
+  - cd RSqueakGit
   - export RSQUEAKCOMMIT="$(git log --pretty=%h HEAD^..HEAD)"
   - cd ..
   - cp rsqueak rsqueak-x86-darwin-jit-$RSQUEAKCOMMIT
