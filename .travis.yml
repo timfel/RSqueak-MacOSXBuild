@@ -1,0 +1,23 @@
+language: objective-c
+install:
+  - curl -L -O https://bitbucket.org/pypy/pypy/get/default.tar.bz2
+  - tar xjvf default.tar.bz2
+  - mv pypy-pypy* pypy
+  - rm default.tar.bz2
+  - curl -L -O https://bitbucket.org/pypy/rsdl/get/default.tar.bz2
+  - tar xjvf default.tar.bz2
+  - mv pypy-rsdl* rsdl
+  - rm default.tar.bz2
+  - curl -L -O https://github.com/HPI-SWA-Lab/RSqueak/archive/master.zip
+  - unzip master.zip
+  - mv RSqueak-master/* .
+  - rm -rf RSqueak-master
+  - rm master.zip
+env:
+  - PY32="arch -32 /System/Library/Frameworks/Python.framework/Versions/2.7/bin/python"
+  - PYTHONPATH="$PYTHONPATH:pypy/:rsdl/:."
+script:
+  - $PY32 pypy/rpython/bin/rpython --batch -Ojit targetrsqueak.py
+after_success:
+  - cp rsqueak rsqueak-x86-darwin-jit-$TRAVIS_COMMIT
+  - curl -T rsqueak-x86* http://www.lively-kernel.org/babelsberg/RSqueak/
